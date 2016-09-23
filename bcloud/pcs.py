@@ -30,7 +30,7 @@ def get_quota(cookie, tokens):
     '''获取当前的存储空间的容量信息.'''
     url = ''.join([
         const.PAN_API_URL,
-        'quota?channel=chunlei&clienttype=0&web=1',
+        'quota?channel=chunlei&clienttype=',const.PC_CLIENT_TYPE,'&web=1',
         '&t=', util.timestamp(),
     ])
     req = net.urlopen(url, headers={'Cookie': cookie.header_output()})
@@ -61,7 +61,7 @@ def get_user_info(tokens, uk):
     '''
     url = ''.join([
         const.PAN_URL,
-        'pcloud/user/getinfo?channel=chunlei&clienttype=0&web=1',
+        'pcloud/user/getinfo?channel=chunlei&clienttype=',const.PC_CLIENT_TYPE,'&web=1',
         '&bdstoken=', tokens['bdstoken'],
         '&query_uk=', uk,
         '&t=', util.timestamp(),
@@ -90,7 +90,7 @@ def list_share(cookie, tokens, uk, page=1):
         '&start=', str(start),
         '&limit=', str(num),
         '&query_uk=', str(uk),
-        '&channel=chunlei&clienttype=0&web=1',
+        '&channel=chunlei&clienttype=',const.PC_CLIENT_TYPE,'&web=1',
         '&bdstoken=', tokens['bdstoken'],
     ])
     req = net.urlopen(url, headers={
@@ -116,7 +116,7 @@ def list_share_files(cookie, tokens, uk, shareid, dirname, page=1):
         return list_share_single_file(cookie, tokens, uk, shareid)
     url = ''.join([
         const.PAN_URL,
-        'share/list?channel=chunlei&clienttype=0&web=1&num=50',
+        'share/list?channel=chunlei&clienttype=',const.PC_CLIENT_TYPE,'&web=1&num=50',
         '&t=', util.timestamp(),
         '&page=', str(page),
         '&dir=', encoder.encode_uri_component(dirname),
@@ -199,7 +199,7 @@ def enable_share(cookie, tokens, fid_list):
     '''
     url = ''.join([
         const.PAN_URL,
-        'share/set?channel=chunlei&clienttype=0&web=1',
+        'share/set?channel=chunlei&clienttype=',const.PC_CLIENT_TYPE,'&web=1',
         '&bdstoken=', tokens['bdstoken'],
     ])
     data = encoder.encode_uri(
@@ -221,7 +221,7 @@ def disable_share(cookie, tokens, shareid_list):
     '''
     url = ''.join([
         const.PAN_URL,
-        'share/cancel?channel=chunlei&clienttype=0&web=1',
+        'share/cancel?channel=chunlei&clienttype=',const.PC_CLIENT_TYPE,'&web=1',
         '&bdstoken=', tokens['bdstoken'],
     ])
     data = 'shareid_list=' + encoder.encode_uri(json.dumps(shareid_list))
@@ -243,9 +243,9 @@ def enable_private_share(cookie, tokens, fid_list):
     print('enable private share:', fid_list, cookie, tokens)
     url = ''.join([
         const.PAN_URL,
-        'share/set?channel=chunlei&clienttype=0&web=1',
+        'share/set?channel=chunlei&clienttype=',const.PC_CLIENT_TYPE,'&web=1',
         '&bdstoken=', tokens['bdstoken'],
-        '&channel=chunlei&clienttype=0&web=1',
+        '&channel=chunlei&clienttype=',const.PC_CLIENT_TYPE,'&web=1',
         '&appid=250528',
     ])
     print('url:', url)
@@ -276,7 +276,7 @@ def verify_share_password(uk, shareid, pwd, vcode=''):
     '''
     url = ''.join([
         const.PAN_URL,
-        'share/verify?&clienttype=0&web=1&channel=chunlei',
+        'share/verify?&clienttype=',const.PC_CLIENT_TYPE,'&web=1&channel=chunlei',
         '&shareid=', shareid,
         '&uk=', uk,
     ])
@@ -381,7 +381,7 @@ def share_transfer(cookie, tokens, shareid, uk, filelist, dest, upload_mode):
     ondup = const.UPLOAD_ONDUP[upload_mode]
     url = ''.join([
         const.PAN_URL,
-        'share/transfer?app_id=250528&channel=chunlei&clienttype=0&web=1',
+        'share/transfer?app_id=250528&channel=chunlei&clienttype=',const.PC_CLIENT_TYPE,'&web=1',
         '&bdstoken=', tokens['bdstoken'],
         '&from=', uk,
         '&shareid=', shareid,
@@ -412,7 +412,7 @@ def list_inbox(cookie, tokens, start=0, limit=20):
         '&start=', str(start),
         '&limit=', str(limit),
         '&_=', util.timestamp(),
-        '&channel=chunlei&clienttype=0&web=1',
+        '&channel=chunlei&clienttype=',const.PC_CLIENT_TYPE,'&web=1',
         '&bdstoken=', tokens['bdstoken'],
     ])
     req = net.urlopen(url, headers={'Cookie': cookie.header_output()})
@@ -433,7 +433,7 @@ def list_trash(cookie, tokens, path='/', page=1, num=100):
     '''
     url = ''.join([
         const.PAN_API_URL,
-        'recycle/list?channel=chunlei&clienttype=0&web=1',
+        'recycle/list?channel=chunlei&clienttype=',const.PC_CLIENT_TYPE,'&web=1',
         '&num=', str(num),
         '&t=', util.timestamp(),
         '&dir=', encoder.encode_uri_component(path),
@@ -456,7 +456,7 @@ def restore_trash(cookie, tokens, fidlist):
     '''
     url = ''.join([
         const.PAN_API_URL,
-        'recycle/restore?channel=chunlei&clienttype=0&web=1',
+        'recycle/restore?channel=chunlei&clienttype=',const.PC_CLIENT_TYPE,'&web=1',
         '&t=', util.timestamp(),
         '&bdstoken=', tokens['bdstoken'],
     ])
@@ -480,7 +480,7 @@ def delete_trash(cookie, tokens, fidlist):
     '''
     url = ''.join([
         const.PAN_API_URL,
-        'recycle/delete?channel=chunlei&clienttype=0&web=1',
+        'recycle/delete?channel=chunlei&clienttype=',const.PC_CLIENT_TYPE,'&web=1',
         '&bdstoken=', tokens['bdstoken'],
     ])
     data = 'fidlist=' + encoder.encode_uri_component(json.dumps(fidlist))
@@ -498,7 +498,7 @@ def clear_trash(cookie, tokens):
     '''清空回收站, 将里面的所有文件都删除.'''
     url = ''.join([
         const.PAN_API_URL,
-        'recycle/clear?channel=chunlei&clienttype=0&web=1',
+        'recycle/clear?channel=chunlei&clienttype=',const.PC_CLIENT_TYPE,'&web=1',
         '&t=', util.timestamp(),
         '&bdstoken=', tokens['bdstoken'],
     ])
@@ -560,7 +560,7 @@ def mkdir(cookie, tokens, path):
     '''
     url = ''.join([
         const.PAN_API_URL, 
-        'create?a=commit&channel=chunlei&clienttype=0&web=1',
+        'create?a=commit&channel=chunlei&clienttype=',const.PC_CLIENT_TYPE,'&web=1',
         '&bdstoken=', tokens['bdstoken'],
     ])
     data = ''.join([
@@ -584,7 +584,7 @@ def delete_files(cookie, tokens, filelist):
     '''
     url = ''.join([
         const.PAN_API_URL,
-        'filemanager?channel=chunlei&clienttype=0&web=1&opera=delete',
+        'filemanager?channel=chunlei&clienttype=',const.PC_CLIENT_TYPE,'&web=1&opera=delete',
         '&bdstoken=', tokens['bdstoken'],
     ])
     data = 'filelist=' + encoder.encode_uri_component(json.dumps(filelist))
@@ -609,7 +609,7 @@ def rename(cookie, tokens, filelist):
     '''
     url = ''.join([
         const.PAN_API_URL,
-        'filemanager?channel=chunlei&clienttype=0&web=1&opera=rename',
+        'filemanager?channel=chunlei&clienttype=',const.PC_CLIENT_TYPE,'&web=1&opera=rename',
         '&bdstoken=', tokens['bdstoken'],
     ])
     data = 'filelist=' + encoder.encode_uri_component(json.dumps(filelist))
@@ -633,7 +633,7 @@ def move(cookie, tokens, filelist):
     '''
     url = ''.join([
         const.PAN_API_URL,
-        'filemanager?channel=chunlei&clienttype=0&web=1&opera=move',
+        'filemanager?channel=chunlei&clienttype=',const.PC_CLIENT_TYPE,'&web=1&opera=move',
         '&bdstoken=', tokens['bdstoken'],
     ])
     data = 'filelist=' + encoder.encode_uri_component(json.dumps(filelist))
@@ -657,7 +657,7 @@ def copy(cookie, tokens, filelist):
     '''
     url = ''.join([
         const.PAN_API_URL,
-        'filemanager?channel=chunlei&clienttype=0&web=1&opera=copy',
+        'filemanager?channel=chunlei&clienttype=',const.PC_CLIENT_TYPE,'&web=1&opera=copy',
         '&bdstoken=', tokens['bdstoken'],
     ])
     data = 'filelist=' + encoder.encode_uri_component(json.dumps(filelist))
@@ -687,7 +687,7 @@ def get_category(cookie, tokens, category, page=1):
     timestamp = util.timestamp()
     url = ''.join([
         const.PAN_API_URL,
-        'categorylist?channel=chunlei&clienttype=0&web=1',
+        'categorylist?channel=chunlei&clienttype=',const.PC_CLIENT_TYPE,'&web=1',
         '&category=', str(category),
         '&pri=-1&num=100',
         '&t=', timestamp,
@@ -899,7 +899,9 @@ def get_metas(cookie, tokens, filelist, dlink=True):
         filelist = [filelist, ]
     url = ''.join([
         const.PAN_API_URL,
-        'filemetas?channel=chunlei&clienttype=0&web=1',
+        'filemetas?channel=chunlei',
+        '&clienttype=',const.PC_CLIENT_TYPE,
+        '&web=1',
         '&bdstoken=', tokens['bdstoken'],
     ])
     if dlink:
@@ -926,7 +928,9 @@ def search(cookie, tokens, key, path='/'):
     '''
     url = ''.join([
         const.PAN_API_URL,
-        'search?channel=chunlei&clienttype=0&web=1',
+        'search?channel=chunlei',
+        '&clienttype=',const.PC_CLIENT_TYPE,
+        '&web=1',
         '&dir=', path,
         '&key=', key,
         '&recursion',
@@ -950,7 +954,8 @@ def cloud_add_link_task(cookie, tokens, source_url, save_path,
     '''
     url = ''.join([
         const.PAN_URL,
-        'rest/2.0/services/cloud_dl?channel=chunlei&clienttype=0&web=1',
+        'rest/2.0/services/cloud_dl?channel=chunlei',
+        '&clienttype=',const.PC_CLIENT_TYPE,'&web=1',
         '&bdstoken=', tokens['bdstoken'],
     ])
     type_ = ''
@@ -992,7 +997,8 @@ def cloud_add_bt_task(cookie, tokens, source_url, save_path, selected_idx,
     '''
     url = ''.join([
         const.PAN_URL,
-        'rest/2.0/services/cloud_dl?channel=chunlei&clienttype=0&web=1',
+        'rest/2.0/services/cloud_dl?channel=chunlei',
+        '&clienttype=',const.PC_CLIENT_TYPE,'&web=1',
         '&bdstoken=', tokens['bdstoken'],
     ])
     type_ = '2'
@@ -1033,7 +1039,7 @@ def cloud_query_sinfo(cookie, tokens, source_path):
     '''
     url = ''.join([
         const.PAN_URL,
-        'rest/2.0/services/cloud_dl?channel=chunlei&clienttype=0&web=1',
+        'rest/2.0/services/cloud_dl?channel=chunlei','&clienttype=',const.PC_CLIENT_TYPE,'&web=1',
         '&method=query_sinfo&app_id=250528',
         '&bdstoken=', tokens['bdstoken'],
         '&source_path=', encoder.encode_uri_component(source_path),
@@ -1058,7 +1064,7 @@ def cloud_query_magnetinfo(cookie, tokens, source_url, save_path):
     '''
     url = ''.join([
         const.PAN_URL,
-        'rest/2.0/services/cloud_dl?channel=chunlei&clienttype=0&web=1',
+        'rest/2.0/services/cloud_dl?channel=chunlei','&clienttype=',const.PC_CLIENT_TYPE,'&web=1',
         '&bdstoken=', tokens['bdstoken'],
     ])
     data = ''.join([
@@ -1082,7 +1088,7 @@ def cloud_list_task(cookie, tokens, start=0):
     '''
     url = ''.join([
         const.PAN_URL,
-        'rest/2.0/services/cloud_dl?channel=chunlei&clienttype=0&web=1',
+        'rest/2.0/services/cloud_dl?channel=chunlei&clienttype=',const.PC_CLIENT_TYPE,'&web=1',
         '&bdstoken=', tokens['bdstoken'],
         '&need_task_info=1&status=255',
         '&start=', str(start),
@@ -1110,7 +1116,7 @@ def cloud_query_task(cookie, tokens, task_ids):
         '&bdstoken=', tokens['bdstoken'],
         '&task_ids=', ','.join(task_ids),
         '&t=', util.timestamp(),
-        '&channel=chunlei&clienttype=0&web=1',
+        '&channel=chunlei&clienttype=',const.PC_CLIENT_TYPE,'&web=1',
     ])
     req = net.urlopen(url, headers={'Cookie': cookie.header_output()})
     if req:
@@ -1132,7 +1138,7 @@ def cloud_cancel_task(cookie, tokens, task_id):
         '&task_id=', str(task_id),
         '&method=cancel_task&app_id=250528',
         '&t=', util.timestamp(),
-        '&channel=chunlei&clienttype=0&web=1',
+        '&channel=chunlei&clienttype=',const.PC_CLIENT_TYPE,'&web=1',
     ])
     req = net.urlopen(url, headers={'Cookie': cookie.header_output()})
     if req:
@@ -1153,7 +1159,7 @@ def cloud_delete_task(cookie, tokens, task_id):
         '&task_id=', str(task_id),
         '&method=delete_task&app_id=250528',
         '&t=', util.timestamp(),
-        '&channel=chunlei&clienttype=0&web=1',
+        '&channel=chunlei&clienttype=',const.PC_CLIENT_TYPE,'&web=1',
     ])
     req = net.urlopen(url, headers={'Cookie': cookie.header_output()})
     if req:
@@ -1167,7 +1173,7 @@ def cloud_clear_task(cookie, tokens):
     url = ''.join([
         const.PAN_URL,
         'rest/2.0/services/cloud_dl?method=clear_task&app_id=250528',
-        '&channel=chunlei&clienttype=0&web=1',
+        '&channel=chunlei&clienttype=',const.PC_CLIENT_TYPE,'&web=1',
         '&t=', util.timestamp(),
         '&bdstoken=', tokens['bdstoken'],
     ])
