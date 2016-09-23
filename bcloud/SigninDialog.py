@@ -108,7 +108,8 @@ class SigninVcodeDialog(Gtk.Dialog):
                          self.vcodetype, callback=_refresh_vcode)
 
     def check_entry(self, *args):
-        if len(self.vcode_entry.get_text()) == 4:
+        '''中文验证码长度为2,英文验证码长度为4'''
+        if len(self.vcode_entry.get_text()) == 4 or len(self.vcode_entry.get_text()) == 2:
             self.response(Gtk.ResponseType.OK)
 
     def on_vcode_refresh_clicked(self, button):
@@ -319,15 +320,11 @@ class SigninDialog(Gtk.Dialog):
                     verifycode = dialog.get_vcode()
                     codeString = dialog.codeString
                     dialog.destroy()
-                    if not verifycode or len(verifycode) != 4:
-                        self.signin_failed(_('Please input verification code!'))
-                        return
-                    else:
-                        self.signin_button.set_label(_('Get bdstoken...'))
-                        gutil.async_call(auth.post_login, cookie,
-                                         tokens, username,
-                                         password_enc, rsakey, verifycode,
-                                         codeString, callback=on_post_login)
+                    self.signin_button.set_label(_('Get bdstoken...'))
+                    gutil.async_call(auth.post_login, cookie,
+                                     tokens, username,
+                                     password_enc, rsakey, verifycode,
+                                     codeString, callback=on_post_login)
                 # 密码错误
                 elif errno == 4:
                     logger.error('SigninDialog.on_post_login: %s, %s' %
@@ -383,7 +380,8 @@ class SigninDialog(Gtk.Dialog):
                     verifycode = dialog.get_vcode()
                     codeString = dialog.codeString
                     dialog.destroy()
-                    if not verifycode or len(verifycode) != 4:
+                    '''中文验证码长度为2,英文验证码长度为4'''
+                    if not verifycode or len(verifycode) != 4 or len(verifycode) != 2:
                         self.signin_failed(_('Please input verification code!'))
                         return
                     else:
