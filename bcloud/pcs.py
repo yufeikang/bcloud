@@ -530,7 +530,9 @@ def list_dir(cookie, tokens, path, page=1, num=100):
     timestamp = util.timestamp()
     url = ''.join([
         const.PAN_API_URL,
-        'list?channel=chunlei&clienttype=8&web=1',
+        'list?channel=chunlei',
+        '&clienttype=',const.PC_CLIENT_TYPE,
+        '&web=1',
         '&num=', str(num),
         '&t=', timestamp,
         '&page=', str(page),
