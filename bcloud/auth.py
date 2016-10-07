@@ -1,4 +1,3 @@
-
 # Copyright (C) 2014-2015 LiuLang <gsushzhsosgsu@gmail.com>
 # Use of this source code is governed by GPLv3 license that can be found
 # in http://www.gnu.org/licenses/gpl-3.0.html
@@ -22,9 +21,11 @@ from bcloud import net
 from bcloud.RequestCookie import RequestCookie
 from bcloud import util
 
+
 def get_ppui_logintime():
     '''ppui_ligintime 这个字段, 是一个随机数.'''
     return str(random.randint(52000, 58535))
+
 
 def get_BAIDUID():
     '''获取一个cookie - BAIDUID.
@@ -42,6 +43,7 @@ def get_BAIDUID():
         return req.headers.get_all('Set-Cookie')
     else:
         return None
+
 
 def get_token(cookie):
     '''获取一个页面访问的token, 这里需要之前得到的BAIDUID 这个cookie值
@@ -66,7 +68,7 @@ def get_token(cookie):
         '&tt=', util.timestamp(),
         '&class=login&logintype=basicLogin',
     ])
-    headers={
+    headers = {
         'Cookie': cookie.header_output(),
         'Accept': const.ACCEPT_HTML,
         'Cache-control': 'max-age=0',
@@ -78,6 +80,7 @@ def get_token(cookie):
         if content_obj:
             return cookie, content_obj['data']['token']
     return None
+
 
 def get_UBI(cookie, tokens):
     '''检查登录历史, 可以获得一个Cookie - UBI.
@@ -91,7 +94,7 @@ def get_UBI(cookie, tokens):
         '&tpl=pp&apiver=v3',
         '&tt=', util.timestamp(),
     ])
-    headers={
+    headers = {
         'Cookie': cookie.header_output(),
         'Referer': const.REFERER,
     }
@@ -100,6 +103,7 @@ def get_UBI(cookie, tokens):
         return req.headers.get_all('Set-Cookie')
     else:
         return None
+
 
 def check_login(cookie, tokens, username):
     '''进行登录验证, 主要是在服务器上验证这个帐户的状态.
@@ -118,7 +122,7 @@ def check_login(cookie, tokens, username):
         '&username=', encoder.encode_uri_component(username),
         '&isphone=false',
     ])
-    headers={
+    headers = {
         'Cookie': cookie.header_output(),
         'Referer': const.REFERER,
     }
@@ -128,6 +132,7 @@ def check_login(cookie, tokens, username):
         return ubi, json.loads(req.data.decode())
     else:
         return None
+
 
 def get_signin_vcode(cookie, codeString):
     '''获取登录时的验证码图片.
@@ -139,7 +144,7 @@ def get_signin_vcode(cookie, codeString):
         'cgi-bin/genimage?',
         codeString,
     ])
-    headers={
+    headers = {
         'Cookie': cookie.header_output(),
         'Referer': const.REFERER,
     }
@@ -148,6 +153,7 @@ def get_signin_vcode(cookie, codeString):
         return req.data
     else:
         return None
+
 
 def refresh_signin_vcode(cookie, tokens, vcodetype):
     '''刷新验证码.
@@ -163,7 +169,7 @@ def refresh_signin_vcode(cookie, tokens, vcodetype):
         '&fr=ligin',
         '&vcodetype=', encoder.encode_uri(vcodetype),
     ])
-    headers={
+    headers = {
         'Cookie': cookie.header_output(),
         'Referer': const.REFERER,
     }
@@ -178,6 +184,7 @@ def refresh_signin_vcode(cookie, tokens, vcodetype):
             logger.error(traceback.format_exc())
     return None
 
+
 def get_public_key(cookie, tokens):
     '''获取RSA公钥, 这个用于加密用户的密码
     
@@ -189,7 +196,7 @@ def get_public_key(cookie, tokens):
         '?token=', tokens['token'],
         '&tpl=pp&apiver=v3&tt=', util.timestamp(),
     ])
-    headers={
+    headers = {
         'Cookie': cookie.header_output(),
         'Referer': const.REFERER,
     }
@@ -198,6 +205,7 @@ def get_public_key(cookie, tokens):
         data = req.data
         return util.json_loads_single(req.data.decode())
     return None
+
 
 def post_login(cookie, tokens, username, password, rsakey, verifycode='',
                codestring=''):
@@ -230,42 +238,49 @@ def post_login(cookie, tokens, username, password, rsakey, verifycode='',
         '&mem_pass=on',
         '&rsakey=', rsakey,
         '&crypttype=12',
-        '&ppui_logintime=',get_ppui_logintime(),
+        '&ppui_logintime=', get_ppui_logintime(),
         '&callback=parent.bd__pcbs__28g1kg',
     ])
-    headers={
+    headers = {
         'Accept': const.ACCEPT_HTML,
-        'Cookie': cookie.sub_output('BAIDUID','HOSUPPORT', 'UBI'),
+        'Cookie': cookie.sub_output('BAIDUID', 'HOSUPPORT', 'UBI'),
         'Referer': const.REFERER,
         'Connection': 'Keep-Alive',
     }
     req = net.urlopen(url, headers=headers, data=data.encode())
     if req:
-        content= req.data.decode()
-        match = re.search('"(err_no[^"]+)"', content)
-        if not match:
-            return (-1, None)
-        query = dict(urllib.parse.parse_qsl(match.group(1)))
-        query['err_no'] = int(query['err_no'])
-        err_no = query['err_no']
-        auth_cookie = req.headers.get_all('Set-Cookie')
+        if req.getcode() == 200:
+            content = req.data.decode()
+            match = re.search('"(err_no[^"]+)"', content)
+            if not match:
+                return (-1, None)
+            query = dict(urllib.parse.parse_qsl(match.group(1)))
+            query['err_no'] = int(query['err_no'])
+            err_no = query['err_no']
+            auth_cookie = req.headers.get_all('Set-Cookie')
 
-        if err_no == 0:
-            return (0, auth_cookie)
-        # #!! not bind cellphone
-        elif err_no == 18:
-            return (0, auth_cookie)
-        # 要输入验证码
-        elif err_no == 257:
-            return (err_no, query)
-        # 需要短信验证
-        elif err_no == 400031:
-            return (err_no, query)
+            if err_no == 0:
+                return (0, auth_cookie)
+            # #!! not bind cellphone
+            elif err_no == 18:
+                return (0, auth_cookie)
+            # 要输入验证码
+            elif err_no == 257:
+                return (err_no, query)
+            # 需要短信验证
+            elif err_no == 400031:
+                return (err_no, query)
+            # 选择验证方式
+            elif err_no == 120021:
+                return (err_no, query)
+            else:
+                return (err_no, None)
         else:
-            return (err_no, None)
+            return (-1, req.getcode())
     else:
         return (-1, None)
     return (-1, None)
+
 
 def parse_bdstoken(content):
     '''从页面中解析出bdstoken等信息.
@@ -281,6 +296,7 @@ def parse_bdstoken(content):
     if bds_match:
         bdstoken = bds_match.group(1)
     return bdstoken
+
 
 def get_bdstoken(cookie):
     '''从/disk/home页面获取bdstoken等token信息

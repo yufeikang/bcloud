@@ -12,7 +12,7 @@ from bcloud import Config
 _ = Config._
 
 BAIDU_URL = 'http://www.baidu.com/'
-PASSPORT_BASE = 'https://passport.baidu.com/'
+PASSPORT_BASE = 'http://passport.baidu.com/'
 PASSPORT_URL = PASSPORT_BASE + 'v2/api/'
 PASSPORT_LOGIN = PASSPORT_BASE + 'v2/api/?login'
 REFERER = PASSPORT_BASE + 'v2/?login'

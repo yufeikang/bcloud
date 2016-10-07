@@ -340,6 +340,12 @@ class SigninDialog(Gtk.Dialog):
                                  (info, error))
                     self.signin_failed(
                             _('Does not support SMS/Email verification!'))
+                # 选择验证方式
+                elif errno == 120021:
+                    logger.error('SigninDialog.on_post_login: %s, %s' %
+                                 (info, error))
+                    self.signin_failed(
+                        _('Does not support SMS/Email verification!'))
                 else:
                     logger.error('SigninDialog.on_post_login: %s, %s' %
                                  (info, error))
