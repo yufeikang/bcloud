@@ -222,15 +222,15 @@ def post_login(cookie, tokens, username, password, rsakey, verifycode='',
     '''
     url = const.PASSPORT_LOGIN
     data = ''.join([
-        'staticpage=https%3A%2F%2Fpassport.baidu.com%2Fstatic%2Fpasspc-account%2Fhtml%2Fv3Jump.html',
+        'staticpage=http://www.baidu.com/cache/user/html/v3Jump.html',
         '&charset=UTF-8',
         '&token=', tokens['token'],
         '&tpl=pp&subpro=&apiver=v3',
         '&tt=', util.timestamp(),
         '&codestring=', codestring,
-        '&safeflg=0&u=http%3A%2F%2Fpassport.baidu.com%2F',
-        '&isPhone=',
-        '&quick_user=0&logintype=basicLogin&logLoginType=pc_loginBasic&idc=',
+        '&safeflg=0&u=http%3A%2F%2Fwww.baidu.com%2F',
+        '&isPhone=false',
+        '&quick_user=0&logintype=baseLogin&logLoginType=pc_loginBasic&idc=',
         '&loginmerge=true',
         '&username=', encoder.encode_uri_component(username),
         '&password=', encoder.encode_uri_component(password),
@@ -270,7 +270,7 @@ def post_login(cookie, tokens, username, password, rsakey, verifycode='',
             # 需要短信验证
             elif err_no == 400031:
                 return (err_no, query)
-            # 选择验证方式
+            # 登录失败,请在弹出的窗口操作,或重新登录
             elif err_no == 120021:
                 return (err_no, query)
             else:

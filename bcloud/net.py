@@ -20,7 +20,7 @@ RETRIES = 3
 TIMEOUT = 50
 
 default_headers = {
-    'User-agent': const.USER_AGENT,
+    'User-agent': const.PC_USER_AGENT,
     'Referer': const.PAN_REFERER,
     #'x-requested-with': 'XMLHttpRequest',
     'Accept': const.ACCEPT_JSON,

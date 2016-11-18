@@ -12,7 +12,7 @@ from bcloud import Config
 _ = Config._
 
 BAIDU_URL = 'http://www.baidu.com/'
-PASSPORT_BASE = 'http://passport.baidu.com/'
+PASSPORT_BASE = 'https://passport.baidu.com/'
 PASSPORT_URL = PASSPORT_BASE + 'v2/api/'
 PASSPORT_LOGIN = PASSPORT_BASE + 'v2/api/?login'
 REFERER = PASSPORT_BASE + 'v2/?login'
@@ -33,7 +33,7 @@ PCS_URL_D = 'http://d.pcs.baidu.com/rest/2.0/pcs/'
 
 ## 以下常量是模拟的PC客户端的参数.
 CHANNEL_URL = 'https://channel.api.duapp.com/rest/2.0/channel/channel?'
-PC_USER_AGENT = 'netdisk;4.5.0.7;PC;PC-Windows;5.1.2600;WindowsBaiduYunGuanJia'
+PC_USER_AGENT = 'netdisk;5.2.7.2;PC;PC-Windows;5.1.2600;WindowsBaiduYunGuanJia'
 PC_DEVICE_ID = '08002788772E'
 PC_DEVICE_NAME = '08002788772E'
 PC_DEVICE_TYPE = '2'

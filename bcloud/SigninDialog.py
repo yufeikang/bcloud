@@ -340,12 +340,27 @@ class SigninDialog(Gtk.Dialog):
                                  (info, error))
                     self.signin_failed(
                             _('Does not support SMS/Email verification!'))
-                # 选择验证方式
+                # 登录失败,请在弹出的窗口操作,或重新登录
                 elif errno == 120021:
                     logger.error('SigninDialog.on_post_login: %s, %s' %
                                  (info, error))
                     self.signin_failed(
-                        _('Does not support SMS/Email verification!'))
+                        _('NET:登录失败,请在弹出的窗口操作,或重新登录'))
+                elif errno == 120019:
+                    logger.error('SigninDialog.on_post_login: %s, %s' %
+                                 (info, error))
+                    self.signin_failed(
+                        _('NET:近期登录次数过多, 请先通过 passport.baidu.com 解除锁定'))
+                elif errno == 500010:
+                    logger.error('SigninDialog.on_post_login: %s, %s' %
+                                 (info, error))
+                    self.signin_failed(
+                        _('NET:登录过于频繁,请24小时后再试'))
+                elif errno == 400031:
+                    logger.error('SigninDialog.on_post_login: %s, %s' %
+                                 (info, error))
+                    self.signin_failed(
+                        _('NET:账号异常，请在当前网络环境下在百度网页端正常登录一次'))
                 else:
                     logger.error('SigninDialog.on_post_login: %s, %s' %
                                  (info, error))
@@ -387,7 +402,7 @@ class SigninDialog(Gtk.Dialog):
                     codeString = dialog.codeString
                     dialog.destroy()
                     '''中文验证码长度为2,英文验证码长度为4'''
-                    if not verifycode or len(verifycode) != 4 or len(verifycode) != 2:
+                    if not verifycode or (len(verifycode) != 4 and len(verifycode) != 2):
                         self.signin_failed(_('Please input verification code!'))
                         return
                     else:
