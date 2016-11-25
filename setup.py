@@ -34,10 +34,10 @@ if __name__ == '__main__':
         description = 'Baidu Pan client for Linux Desktop users',
         version = bcloud.__version__,
         license = 'GPLv3',
-        url = 'https://github.com/LiuLang/bcloud',
+        url = 'https://github.com/Yufeikang/bcloud',
 
-        author = 'LiuLang',
-        author_email = 'gsushzhsosgsu@gmail.com',
+        author = 'KangYufei',
+        author_email = 'kyf0722@gmail.com',
 
         packages = ['bcloud', ],
         scripts = scripts,
