@@ -1,4 +1,3 @@
-
 # Copyright (C) 2014-2015 LiuLang <gsushzhsosgsu@gmail.com>
 # Use of this source code is governed by GPLv3 license that can be found
 # in http://www.gnu.org/licenses/gpl-3.0.html
@@ -23,17 +22,18 @@ from bcloud import pcs
 from bcloud import util
 from bcloud.log import logger
 
-CHUNK_SIZE = 131072       # 128K
-RETRIES = 3               # 连接失败时的重试次数
-DOWNLOAD_RETRIES = 10     # 下载线程的重试次数
+CHUNK_SIZE = 131072  # 128K
+RETRIES = 3  # 连接失败时的重试次数
+DOWNLOAD_RETRIES = 10  # 下载线程的重试次数
 THRESHOLD_TO_FLUSH = 500  # 磁盘写入数据次数超过这个值时, 就进行一次同步.
-SMALL_FILE_SIZE = 1048576 # 1M, 下载小文件时用单线程下载
+SMALL_FILE_SIZE = 1048576  # 1M, 下载小文件时用单线程下载
 
 (NAME_COL, PATH_COL, FSID_COL, SIZE_COL, CURRSIZE_COL, LINK_COL,
-    ISDIR_COL, SAVENAME_COL, SAVEDIR_COL, STATE_COL, STATENAME_COL,
-    HUMANSIZE_COL, PERCENT_COL) = list(range(13))
+ ISDIR_COL, SAVENAME_COL, SAVEDIR_COL, STATE_COL, STATENAME_COL,
+ HUMANSIZE_COL, PERCENT_COL) = list(range(13))
 
 BATCH_FINISISHED, BATCH_ERROR = -1, -2
+
 
 def get_tmp_filepath(dir_name, save_name):
     '''返回最终路径名及临时路径名'''
@@ -42,7 +42,6 @@ def get_tmp_filepath(dir_name, save_name):
 
 
 class DownloadBatch(threading.Thread):
-
     def __init__(self, id_, queue, url, lock, start_size, end_size, fh,
                  timeout):
         super().__init__()
@@ -102,16 +101,16 @@ class DownloadBatch(threading.Thread):
                     if block:
                         break
                 except (OSError, AttributeError):
-                    #self.queue.put((self.id_, BATCH_ERROR), block=False)
+                    # self.queue.put((self.id_, BATCH_ERROR), block=False)
                     logger.error(traceback.format_exc())
                     req = None
-                except  :
-                    req=None
-                    logger.error( 'Time out occured.')
-                    #self.queue.put((self.id_, BATCH_ERROR), block=False)
-                    #return
+                except:
+                    req = None
+                    logger.error('Time out occured.')
+                    # self.queue.put((self.id_, BATCH_ERROR), block=False)
+                    # return
 
-                   
+
             else:
                 logger.error('DownloadBatch, block is empty: %s, %s, %s, %s' %
                              (offset, self.start_size, self.end_size,
@@ -125,7 +124,7 @@ class DownloadBatch(threading.Thread):
                 self.fh.seek(offset)
                 self.fh.write(block)
                 self.queue.put((self.id_, len(block)), block=False)
-            offset = offset + len(block)
+            offset += len(block)
             # 下载完成
             if offset >= self.end_size:
                 self.queue.put((self.id_, BATCH_FINISISHED), block=False)
@@ -140,13 +139,13 @@ class Downloader(threading.Thread, GObject.GObject):
     '''
 
     __gsignals__ = {
-        'started': (GObject.SIGNAL_RUN_LAST, GObject.TYPE_NONE, (str, )),
+        'started': (GObject.SIGNAL_RUN_LAST, GObject.TYPE_NONE, (str,)),
         'received': (GObject.SIGNAL_RUN_LAST, GObject.TYPE_NONE,
                      (str, GObject.TYPE_INT64, GObject.TYPE_INT64)),
-        'downloaded': (GObject.SIGNAL_RUN_LAST, GObject.TYPE_NONE, (str, )),
+        'downloaded': (GObject.SIGNAL_RUN_LAST, GObject.TYPE_NONE, (str,)),
         # FSID, tmp-filepath
         'disk-error': (GObject.SIGNAL_RUN_LAST, GObject.TYPE_NONE, (str, str)),
-        'network-error': (GObject.SIGNAL_RUN_LAST, GObject.TYPE_NONE, (str, )),
+        'network-error': (GObject.SIGNAL_RUN_LAST, GObject.TYPE_NONE, (str,)),
     }
 
     def __init__(self, parent, row):
@@ -166,7 +165,7 @@ class Downloader(threading.Thread, GObject.GObject):
         if not os.path.exists(row[SAVEDIR_COL]):
             os.makedirs(row[SAVEDIR_COL], exist_ok=True)
         filepath, tmp_filepath, conf_filepath = get_tmp_filepath(
-                row[SAVEDIR_COL], row[SAVENAME_COL]) 
+            row[SAVEDIR_COL], row[SAVENAME_COL])
 
         if os.path.exists(filepath):
             if self.download_mode == DownloadMode.IGNORE:
@@ -322,5 +321,6 @@ class Downloader(threading.Thread, GObject.GObject):
     def stop(self):
         '''停止下载, 并删除之前下载的片段'''
         self.row[STATE_COL] = State.CANCELED
+
 
 GObject.type_register(Downloader)

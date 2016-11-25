@@ -63,7 +63,7 @@ DEFAULT_PROFILE = {
     # 同时进行的下载任务数, 1~5
     'concurr-download': 2,
     # 下载单个任务的线程数 1~10
-    'download-segments': 3,
+    'download-segments': 8,
     # 隔5分钟后尝试重新下载
     'retries-each': 5,
     # 60 秒后下载超时
@@ -74,7 +74,7 @@ DEFAULT_PROFILE = {
     'confirm-download-deletion': True,
 
     # 同时进行的上传任务数, 1~5
-    'concurr-upload': 2,
+    'concurr-upload': 3,
     # 上传隐藏文件.
     'upload-hidden-files': True,
     # 上传时如果服务器端已存在同名文件时的操作方式

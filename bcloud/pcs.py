@@ -46,7 +46,7 @@ def get_user_uk(cookie, tokens):
     req = net.urlopen(url, headers={'Cookie': cookie.header_output()})
     if req:
         content = req.data.decode()
-        match = re.findall('/share/home\?uk=(\d+)" target=', content)
+        match = re.findall(',\"uk\":(\d+),', content)
         if len(match) == 1:
             return match[0]
         else:
