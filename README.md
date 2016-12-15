@@ -16,6 +16,7 @@ bcloud 是[百度网盘](http://pan.baidu.com)的Linux桌面客户端.
 * OpenSuse 13
 * Ubuntu 14.04
 * Ubuntu 13.10
+* Ubuntu 16.04
 * Linux Mint 17
 
 
