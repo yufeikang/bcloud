@@ -28,8 +28,11 @@ bcloud 是[百度网盘](http://pan.baidu.com)的Linux桌面客户端.
 
 安装
 =======
-请用户直接到 [bcloud-packages](https://github.com/LiuLang/bcloud-packages)
-下载发行版相对应的安装包, 比如deb, rpm等..
+需要Python3支持
+安装执行：
+```
+python3 setup.py
+```
 
 Q&A
 ===

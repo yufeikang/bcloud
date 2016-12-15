@@ -1,3 +1,7 @@
+v3.9.0 - 2016.11.25
+* 修复各种网络错误 (by @Yufeikang).
+* 修复验证码问题 (by @Yufeikang).
+
 v3.8.2 - 2015.12.25
 * Fixed: failed to get bdstoken (pull#214, by @zhaihj).
 
