@@ -1,6 +1,7 @@
 关于
 =====
 bcloud 是[百度网盘](http://pan.baidu.com)的Linux桌面客户端.
+[原项目地址](https://github.com/LiuLang/bcloud),大神@Liulang很久没有维护了。最近迁移到linux平台发现了这个好工具，还好自己学过Python，稍微修改了一下，现在可以使用了。如果没有大的变故，我来维护这个项目，方便国内的Linux党
 
 已经支持的Linux系统/版本:
 
