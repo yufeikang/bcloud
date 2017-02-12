@@ -20,7 +20,7 @@ REFERER = PASSPORT_BASE + 'v2/?login'
 USER_AGENT = 'Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Firefox/31.0 Iceweasel/31.2.0'
 PAN_URL = 'http://pan.baidu.com/'
 PAN_API_URL = PAN_URL + 'api/'
-PAN_REFERER = 'http://pan.baidu.com/disk/home'
+PAN_REFERER = 'https://pan.baidu.com/disk/home'
 SHARE_REFERER = PAN_URL + 'share/manage'
 
 # 一般的服务器名

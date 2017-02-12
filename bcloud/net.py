@@ -1,4 +1,3 @@
-
 # Copyright (C) 2014-2015 LiuLang <gsushzhsosgsu@gmail.com>
 # Use of this source code is governed by GPLv3 license that can be found
 # in http://www.gnu.org/licenses/gpl-3.0.html
@@ -13,6 +12,8 @@ import urllib.parse
 import urllib.request
 import zlib
 
+from bcloud.RequestCookie import RequestCookie
+
 from bcloud import const
 from bcloud.log import logger
 
@@ -20,15 +21,17 @@ RETRIES = 3
 TIMEOUT = 50
 
 default_headers = {
-    'User-agent': const.PC_USER_AGENT,
+    'User-agent': const.USER_AGENT,
     'Referer': const.PAN_REFERER,
-    #'x-requested-with': 'XMLHttpRequest',
+    'Host': 'pan.baidu.com',
+    # 'x-requested-with': 'XMLHttpRequest',
     'Accept': const.ACCEPT_JSON,
     'Accept-language': 'zh-cn, zh;q=0.5',
     'Accept-encoding': 'gzip, deflate',
     'Pragma': 'no-cache',
     'Cache-control': 'no-cache',
 }
+
 
 def urloption(url, headers={}, retries=RETRIES):
     '''发送OPTION 请求'''
@@ -44,15 +47,14 @@ def urloption(url, headers={}, retries=RETRIES):
             return resp
         except OSError:
             logger.error(traceback.format_exc())
-            #return None
+            # return None
         except:
             logger.error(traceback.format_exc())
-            #return None
+            # return None
     return None
 
 
 class ForbiddenHandler(urllib.request.HTTPErrorProcessor):
-
     def http_error_403(self, req, fp, code, msg, headers):
         return fp
 
@@ -66,13 +68,30 @@ def urlopen_simple(url, retries=RETRIES, timeout=TIMEOUT):
             return urllib.request.urlopen(url, timeout=timeout)
         except OSError:
             logger.error(traceback.format_exc())
-            
-        except :
+
+        except:
             logger.error(traceback.format_exc())
-            
+
     return None
 
-def urlopen(url, headers={}, data=None, retries=RETRIES, timeout=TIMEOUT):
+
+class myRedirctHandler(urllib.request.HTTPRedirectHandler):
+    def __init__(self, cookies=RequestCookie()):
+        self.cookies = cookies
+
+    def http_error_302(self, req, fp, code, msg, headers):
+        cookie = headers.get_all('Set-Cookie')
+        self.cookies.load_list(cookie)
+
+        return super().http_error_302(req, fp, code, msg, headers)
+
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        if self.cookies is not None:
+            req.add_header('Cookie', self.cookies.header_output())
+        return super().redirect_request(req, fp, code, msg, headers, newurl)
+
+
+def urlopen(url, headers={}, data=None, retries=RETRIES, timeout=TIMEOUT, cookie=RequestCookie()):
     '''打开一个http连接, 并返回Request.
 
     headers 是一个dict. 默认提供了一些项目, 比如User-Agent, Referer等, 就
@@ -86,8 +105,9 @@ def urlopen(url, headers={}, data=None, retries=RETRIES, timeout=TIMEOUT):
     headers_merged = default_headers.copy()
     for key in headers.keys():
         headers_merged[key] = headers[key]
-    opener = urllib.request.build_opener(ForbiddenHandler)
-    opener.addheaders = [(k, v) for k,v in headers_merged.items()]
+    redirectHandler = myRedirctHandler(cookie)
+    opener = urllib.request.build_opener(ForbiddenHandler, redirectHandler)
+    opener.addheaders = [(k, v) for k, v in headers_merged.items()]
 
     for i in range(retries):
         try:
@@ -99,13 +119,14 @@ def urlopen(url, headers={}, data=None, retries=RETRIES, timeout=TIMEOUT):
             elif encoding == 'deflate':
                 req.data = zlib.decompress(req.data, -zlib.MAX_WBITS)
             return req
-        except OSError:
+        except OSError as e:
             logger.error(traceback.format_exc())
-            
+
         except:
             logger.error(traceback.format_exc())
-            
+
     return None
+
 
 def urlopen_without_redirect(url, headers={}, data=None, retries=RETRIES):
     '''请求一个URL, 并返回一个Response对象. 不处理重定向.
@@ -130,8 +151,9 @@ def urlopen_without_redirect(url, headers={}, data=None, retries=RETRIES):
             logger.error(traceback.format_exc())
         except:
             logger.error(traceback.format_exc())
-            #return None
+            # return None
     return None
+
 
 def post_multipart(url, headers, fields, files, retries=RETRIES):
     content_type, body = encode_multipart_formdata(fields, files)
@@ -159,8 +181,9 @@ def post_multipart(url, headers, fields, files, retries=RETRIES):
             logger.error(traceback.format_exc())
         except:
             logger.error(traceback.format_exc())
-            #return None
+            # return None
     return None
+
 
 def encode_multipart_formdata(fields, files):
     BOUNDARY = b'----------ThIs_Is_tHe_bouNdaRY_$'
@@ -172,7 +195,7 @@ def encode_multipart_formdata(fields, files):
     for (key, value) in fields:
         l.append(S_BOUNDARY)
         l.append('Content-Disposition: form-data; name="{0}"'.format(
-                key).encode())
+            key).encode())
         l.append(BLANK)
         l.append(value.encode())
     for (key, filename, content) in files:
@@ -187,6 +210,7 @@ def encode_multipart_formdata(fields, files):
     body = CRLF.join(l)
     content_type = 'multipart/form-data; boundary={0}'.format(BOUNDARY.decode())
     return content_type, body
+
 
 def get_content_type(filename):
     return mimetypes.guess_type(filename)[0] or 'application/octet-stream'

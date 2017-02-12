@@ -199,7 +199,7 @@ def enable_share(cookie, tokens, fid_list):
     '''
     url = ''.join([
         const.PAN_URL,
-        'share/set?channel=chunlei&clienttype=',const.PC_CLIENT_TYPE,'&web=1',
+        'share/set?channel=chunlei&clienttype=',const.PC_CLIENT_TYPE,'&web=1&app_id=250528',
         '&bdstoken=', tokens['bdstoken'],
     ])
     data = encoder.encode_uri(
