@@ -222,10 +222,13 @@ def post_login(cookie, tokens, username, password, rsakey, verifycode='',
     '''
     url = const.PASSPORT_LOGIN
     data = ''.join([
-        'staticpage=http://www.baidu.com/cache/user/html/v3Jump.html',
+        'staticpage=http%3A%2F%2Fyun.baidu.com%2Fres%2Fstatic%2Fthirdparty%2Fpass_v3_jump.html',
+        'tpl=netdisk',
+        'subpro=netdisk_web',
+        'u=http%3A%2F%2Fyun.baidu.com%2Fdisk%2Fhome',
         '&charset=UTF-8',
         '&token=', tokens['token'],
-        '&tpl=pp&subpro=&apiver=v3',
+        '&apiver=v3',
         '&tt=', util.timestamp(),
         '&codestring=', codestring,
         '&safeflg=0&u=http%3A%2F%2Fwww.baidu.com%2F',
@@ -244,7 +247,7 @@ def post_login(cookie, tokens, username, password, rsakey, verifycode='',
     headers = {
         'Accept': const.ACCEPT_HTML,
         'Cookie': cookie.sub_output('BAIDUID', 'HOSUPPORT', 'UBI'),
-        'Referer': const.REFERER,
+        'Referer': 'https://pan.baidu.com/',
         'Connection': 'Keep-Alive',
     }
     req = net.urlopen(url, headers=headers, data=data.encode())
@@ -265,7 +268,7 @@ def post_login(cookie, tokens, username, password, rsakey, verifycode='',
             elif err_no == 18:
                 return (0, auth_cookie)
             # 要输入验证码
-            elif err_no == 257:
+            elif err_no == 257 or err_no == 7:
                 return (err_no, query)
             # 需要短信验证
             elif err_no == 400031:
