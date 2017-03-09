@@ -43,7 +43,7 @@ def get_quota(cookie, tokens):
 def get_user_uk(cookie, tokens):
     '''获取用户的uk'''
     url = 'http://yun.baidu.com'
-    req = net.urlopen(url, headers={'Cookie': cookie.header_output()})
+    req = net.urlopen(url, headers={'Cookie': cookie.header_output()}, cookie=cookie)
     if req:
         content = req.data.decode()
         match = re.findall(',\"uk\":(\d+),', content)

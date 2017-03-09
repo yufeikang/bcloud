@@ -76,6 +76,9 @@ def urlopen_simple(url, retries=RETRIES, timeout=TIMEOUT):
 
 
 class myRedirctHandler(urllib.request.HTTPRedirectHandler):
+    '''
+    该处理保证 302 跳转不丢失cookies
+    '''
     def __init__(self, cookies=RequestCookie()):
         self.cookies = cookies
 
