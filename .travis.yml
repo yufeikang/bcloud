@@ -9,8 +9,7 @@ python:
 # command to install dependencies
 install: "pip install -r requirements.txt"
  # Build/test dependencies
-  - pip install -r requirements.txt
+  #- pip3 install -r requirements.txt
   # Get fab to test fab
   - python3 setup.py install
-# command to run tests
-script: pytest
+
