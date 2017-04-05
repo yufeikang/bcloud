@@ -1,0 +1,16 @@
+language: python
+python:
+  - "3.2"
+  - "3.3"
+  - "3.4"
+  - "3.5"
+  - "3.6"
+  - "nightly" # currently points to 3.7-dev
+# command to install dependencies
+install: "pip install -r requirements.txt"
+ # Build/test dependencies
+  - pip install -r requirements.txt
+  # Get fab to test fab
+  - python3 setup.py install
+# command to run tests
+script: pytest
