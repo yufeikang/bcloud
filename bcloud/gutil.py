@@ -1,4 +1,3 @@
-
 # Copyright (C) 2014-2015 LiuLang <gsushzhsosgsu@gmail.com>
 # Use of this source code is governed by GPLv3 license that can be found
 # in http://www.gnu.org/licenses/gpl-3.0.html
@@ -20,8 +19,10 @@ from bcloud.log import logger
 from bcloud import net
 from bcloud import pcs
 from bcloud import util
+
 try:
     import keyring
+
     keyring_available = True
     try:
         keyring.set_password("test", "utest", "ptest");
@@ -95,7 +96,7 @@ DEFAULT_PROFILE = {
         'VideoPage': 0,
     },
 }
-RETRIES = 3   # 调用keyring模块与libgnome-keyring交互的尝试次数
+RETRIES = 3  # 调用keyring模块与libgnome-keyring交互的尝试次数
 AVATAR_UPDATE_INTERVAL = 604800  # 用户头像更新频率, 默认是7天
 
 
@@ -105,6 +106,7 @@ def async_call(func, *args, callback=None):
     If error occurs in `func`, error will keep the traceback and passed to
     `callback` as second parameter. Always check `error` is not None.
     '''
+
     def do_call():
         result = None
         error = None
@@ -121,6 +123,7 @@ def async_call(func, *args, callback=None):
     thread.daemon = True
     thread.start()
 
+
 def xdg_open(uri):
     '''使用桌面环境中默认的程序打开指定的URI
     
@@ -133,6 +136,7 @@ def xdg_open(uri):
     except FileNotFoundError:
         logger.error(traceback.format_exc())
 
+
 def update_liststore_image(liststore, tree_iters, col, pcs_files, dir_name,
                            icon_size=96):
     '''下载文件缩略图, 并将它显示到liststore里.
@@ -141,6 +145,7 @@ def update_liststore_image(liststore, tree_iters, col, pcs_files, dir_name,
     dir_name  - 缓存目录, 下载到的图片会保存这个目录里.
     size      - 指定图片的缩放大小, 默认是96px.
     '''
+
     def update_image(filepath, tree_iter):
         try:
             pix = GdkPixbuf.Pixbuf.new_from_file_at_size(filepath, icon_size,
@@ -184,6 +189,7 @@ def update_liststore_image(liststore, tree_iters, col, pcs_files, dir_name,
             if status:
                 GLib.idle_add(update_image, filepath, tree_iter)
 
+
 def update_share_image(liststore, tree_iters, col, large_col, pcs_files,
                        dir_name, icon_size, large_icon_size):
     '''下载文件缩略图, 并将它显示到liststore里.
@@ -192,6 +198,7 @@ def update_share_image(liststore, tree_iters, col, large_col, pcs_files,
     pcs_files - 里面包含了几个必要的字段.
     dir_name  - 缓存目录, 下载到的图片会保存这个目录里.
     '''
+
     def update_image(filepath, tree_iter):
         try:
             tree_path = liststore.get_path(tree_iter)
@@ -204,7 +211,7 @@ def update_share_image(liststore, tree_iters, col, large_col, pcs_files,
                                          height * icon_size // width,
                                          GdkPixbuf.InterpType.NEAREST)
             liststore[tree_path][col] = small_pix
-            liststore[tree_path][large_col] = pix 
+            liststore[tree_path][large_col] = pix
         except GLib.GError:
             logger.error(traceback.format_exc())
 
@@ -240,6 +247,7 @@ def update_share_image(liststore, tree_iters, col, large_col, pcs_files,
             if status:
                 GLib.idle_add(update_image, filepath, tree_iter)
 
+
 def update_avatar(cookie, tokens, dir_name):
     '''获取用户头像信息'''
     uk = pcs.get_user_uk(cookie, tokens)
@@ -250,8 +258,8 @@ def update_avatar(cookie, tokens, dir_name):
         return None
     img_path = os.path.join(dir_name, 'avatar.jpg')
     if (os.path.exists(img_path) and
-            time.time() - os.stat(img_path).st_mtime <= AVATAR_UPDATE_INTERVAL):
-        return (uk, user_info['uname'], img_path)
+                    time.time() - os.stat(img_path).st_mtime <= AVATAR_UPDATE_INTERVAL):
+        return uk, user_info['uname'], img_path
     img_url = user_info['avatar_url']
     if not img_url:
         return None
@@ -261,13 +269,15 @@ def update_avatar(cookie, tokens, dir_name):
         return None
     with open(img_path, 'wb') as fh:
         fh.write(req.data)
-    return (uk, user_info['uname'], img_path)
+    return uk, user_info['uname'], img_path
+
 
 def ellipse_text(text, length=10):
     if len(text) < length:
         return text
     else:
         return text[:8] + '..'
+
 
 def load_profile(profile_name):
     '''读取特定帐户的配置信息
@@ -291,7 +301,7 @@ def load_profile(profile_name):
         for i in range(RETRIES):
             try:
                 profile['password'] = keyring.get_password(
-                        Config.DBUS_APP_NAME, profile['username'])
+                    Config.DBUS_APP_NAME, profile['username'])
                 break
             except (keyring.errors.InitError, dbus.exceptions.DBusException):
                 logger.error(traceback.format_exc())
@@ -300,6 +310,7 @@ def load_profile(profile_name):
     if not profile['password']:
         profile['password'] = ''
     return profile
+
 
 def dump_profile(profile):
     '''保存帐户的配置信息.
@@ -322,9 +333,11 @@ def dump_profile(profile):
     with open(path, 'w') as fh:
         json.dump(profile, fh)
 
+
 def reach_scrolled_bottom(adj):
     '''在ScrolledWindow里面, 滚动到了底部, 就需要尝试载入下一页的内容'''
     return (adj.get_upper() - adj.get_page_size() - adj.get_value()) < 80
+
 
 def tree_model_natsort(model, row1, row2, user_data=None):
     '''用natural sorting算法对TreeModel的一个column进行排序'''
@@ -339,9 +352,11 @@ def tree_model_natsort(model, row1, row2, user_data=None):
     else:
         return 1
 
+
 def escape(tooltip):
     '''Escape special characters in tooltip text'''
     return GLib.markup_escape_text(tooltip)
+
 
 def text_buffer_get_all_text(buf):
     '''Get all text in a GtkTextBuffer'''

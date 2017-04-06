@@ -1,4 +1,3 @@
-
 # Copyright (C) 2014-2015 LiuLang <gsushzhsosgsu@gmail.com>
 # Use of this source code is governed by GPLv3 license that can be found
 # in http://www.gnu.org/licenses/gpl-3.0.html
@@ -71,12 +70,14 @@ _base_conf = {
     'profiles': [],
 }
 
+
 def check_first():
     '''这里, 要创建基本的目录结构'''
     if not os.path.exists(CONF_DIR):
         os.makedirs(CONF_DIR, exist_ok=True)
     if not os.path.exists(CACHE_DIR):
         os.makedirs(CACHE_DIR, exist_ok=True)
+
 
 def load_conf():
     '''获取基本设定信息, 里面存放着所有可用的profiles, 以及默认的profile'''
@@ -87,9 +88,11 @@ def load_conf():
         dump_conf(_base_conf)
         return _base_conf
 
+
 def dump_conf(conf):
     with open(_conf_file, 'w') as fh:
         json.dump(conf, fh)
+
 
 def get_cache_path(profile_name):
     '''获取这个帐户的缓存目录, 如果不存在, 就创建它'''
@@ -98,12 +101,14 @@ def get_cache_path(profile_name):
         os.makedirs(path, exist_ok=True)
     return path
 
+
 def get_tmp_path(profile_name):
     '''获取这个帐户的临时文件目录, 可以存放验证码图片, 上传时的文件分片等'''
     path = os.path.join(CACHE_DIR, profile_name, 'tmp')
     if not os.path.exists(path):
         os.makedirs(path, exist_ok=True)
     return path
+
 
 def load_color_schema():
     if not os.path.exists(COLOR_SCHEMA):
