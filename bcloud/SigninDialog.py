@@ -1,4 +1,3 @@
-
 # Copyright (C) 2014-2015 LiuLang <gsushzhsosgsu@gmail.com>
 # Use of this source code is governed by GPLv3 license that can be found
 # in http://www.gnu.org/licenses/gpl-3.0.html
@@ -12,6 +11,7 @@ from gi.repository import Gtk
 
 from bcloud import auth
 from bcloud import Config
+
 _ = Config._
 from bcloud import gutil
 from bcloud.log import logger
@@ -19,7 +19,7 @@ from bcloud.RequestCookie import RequestCookie
 from bcloud import util
 from bcloud import Widgets
 
-DELTA = 1 * 24 * 60 * 60   # 1 days
+DELTA = 30 * 24 * 60 * 60  # 1 days
 
 
 class SigninVcodeDialog(Gtk.Dialog):
@@ -120,7 +120,6 @@ class SigninVcodeDialog(Gtk.Dialog):
 
 
 class SigninDialog(Gtk.Dialog):
-
     profile = None
     password_changed = False
 
@@ -131,7 +130,7 @@ class SigninDialog(Gtk.Dialog):
 
         self.set_default_size(460, 260)
         self.set_border_width(15)
-        
+
         self.conf = Config.load_conf()
         self.profile = None
 
@@ -140,7 +139,7 @@ class SigninDialog(Gtk.Dialog):
 
         username_ls = Gtk.ListStore(str)
         for username in self.conf['profiles']:
-            username_ls.append([username,])
+            username_ls.append([username, ])
         self.username_combo = Gtk.ComboBox.new_with_entry()
         self.username_combo.set_model(username_ls)
         self.username_combo.set_entry_text_column(0)
@@ -156,7 +155,7 @@ class SigninDialog(Gtk.Dialog):
         box.pack_start(self.password_entry, False, False, 0)
 
         self.remember_check = Gtk.CheckButton.new_with_label(
-                _('Remember Password'))
+            _('Remember Password'))
         self.remember_check.props.margin_top = 20
         if Config.GTK_GE_312:
             self.remember_check.props.margin_start = 20
@@ -166,7 +165,7 @@ class SigninDialog(Gtk.Dialog):
         self.remember_check.connect('toggled', self.on_remember_check_toggled)
 
         self.signin_check = Gtk.CheckButton.new_with_label(
-                _('Signin Automatically'))
+            _('Signin Automatically'))
         self.signin_check.set_sensitive(False)
         if Config.GTK_GE_312:
             self.signin_check.props.margin_start = 20
@@ -185,7 +184,7 @@ class SigninDialog(Gtk.Dialog):
         box.pack_end(self.infobar, False, False, 0)
         info_content = self.infobar.get_content_area()
         self.info_label = Gtk.Label.new(
-                _('Failed to sign in, please try again.'))
+            _('Failed to sign in, please try again.'))
         info_content.pack_start(self.info_label, False, False, 0)
 
         box.show_all()
@@ -223,7 +222,7 @@ class SigninDialog(Gtk.Dialog):
 
     def use_profile(self, username):
         model = self.username_combo.get_model()
-        for row in model: 
+        for row in model:
             if row[0] == username:
                 self.username_combo.set_active_iter(row.iter)
                 break
@@ -299,7 +298,7 @@ class SigninDialog(Gtk.Dialog):
                 logger.error('SigninDialog.on_post_login: %s, %s' %
                              (info, error))
                 self.signin_failed(
-                        _('Login failed, please try again'))
+                    _('Login failed, please try again'))
             else:
                 errno, query = info
                 if errno == 0:
@@ -333,13 +332,13 @@ class SigninDialog(Gtk.Dialog):
                 # 验证码错误
                 elif errno == 6:
                     self.signin_failed(
-                            _('Verfication code error, please try again'))
+                        _('Verfication code error, please try again'))
                 # 需要短信验证
                 elif errno == 400031:
                     logger.error('SigninDialog.on_post_login: %s, %s' %
                                  (info, error))
                     self.signin_failed(
-                            _('Does not support SMS/Email verification!'))
+                        _('Does not support SMS/Email verification!'))
                 # 登录失败,请在弹出的窗口操作,或重新登录
                 elif errno == 120021:
                     logger.error('SigninDialog.on_post_login: %s, %s' %
@@ -371,7 +370,7 @@ class SigninDialog(Gtk.Dialog):
                 logger.error('SigninDialog.on_get_public_key: %s, %s' %
                              (info, error))
                 self.signin_failed(
-                        _('Failed to request public key, please try again'))
+                    _('Failed to request public key, please try again'))
             else:
                 pubkey = info['pubkey']
                 nonlocal rsakey
@@ -443,12 +442,11 @@ class SigninDialog(Gtk.Dialog):
                 logger.error('SigninDialog.on_get_BAIDUID: %s, %s' %
                              (uid_cookie, error))
                 self.signin_failed(
-                        _('Failed to get BAIDUID cookie, please try again.'))
+                    _('Failed to get BAIDUID cookie, please try again.'))
             else:
                 cookie.load_list(uid_cookie)
                 self.signin_button.set_label(_('Get TOKEN...'))
                 gutil.async_call(auth.get_token, cookie, callback=on_get_token)
-
 
         username = self.username_combo.get_child().get_text()
         password = self.password_entry.get_text()
