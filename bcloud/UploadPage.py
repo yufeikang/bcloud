@@ -543,7 +543,7 @@ class UploadPage(Gtk.Box):
             self.pause_task(row, scan=False)
 
     def pause_task(self, row, scan=True):
-        '''暂停下载任务'''
+        '''暂停上传任务'''
         if row[STATE_COL] == State.UPLOADING:
             self.remove_worker(row[FID_COL], stop=False)
         if row[STATE_COL] in (State.UPLOADING, State.WAITING):
@@ -554,7 +554,7 @@ class UploadPage(Gtk.Box):
                 self.scan_tasks()
 
     def remove_task(self, row, scan=True):
-        '''删除下载任务'''
+        '''删除上传任务'''
         if row[STATE_COL] == State.UPLOADING:
             self.remove_worker(row[FID_COL], stop=True)
         self.remove_task_db(row[FID_COL])

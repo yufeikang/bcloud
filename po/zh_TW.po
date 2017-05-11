@@ -149,7 +149,7 @@ msgstr "打開所在目錄"
 #: ../bcloud/CloudPage.py:78 ../bcloud/DownloadPage.py:144
 #: ../bcloud/UploadPage.py:131
 msgid "Remove selected tasks"
-msgstr "刪除選中的的任務"
+msgstr "刪除選中的任務"
 
 #: ../bcloud/CloudPage.py:86 ../bcloud/CloudPage.py:119
 msgid "Remove completed cloud tasks"
