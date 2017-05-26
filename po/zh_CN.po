@@ -2,20 +2,21 @@
 # Copyright (C) 2014 THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # LiuLang <gsushzhsosgsu@gmail.com>, 2014.
+# Boyuan Yang <073plan@gmail.coom>, 2017.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-05-26 21:27+0800\n"
-"PO-Revision-Date: 2014-10-21 17:14+0800\n"
-"Last-Translator: CzBiX <gliuwr@gmail.com>\n"
-"Language-Team: Chinese (simplified)\n"
+"PO-Revision-Date: 2017-05-26 21:29+0800\n"
+"Last-Translator: Boyuan Yang <073plan@gmail.com>\n"
+"Language-Team: Chinese (Simplified) <debian-l10n-chinese@lists.debian.org>\n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.5.4\n"
+"X-Generator: Poedit 1.8.11\n"
 
 #: ../bcloud/App.py:104 ../bcloud/PreferencesDialog.py:18
 msgid "Preferences"
@@ -235,15 +236,15 @@ msgstr "错误"
 
 #: ../bcloud/DownloadPage.py:49
 msgid "Do you want to remove unfinished tasks?"
-msgstr ""
+msgstr "您是否想要移除未完成的任务？"
 
 #: ../bcloud/DownloadPage.py:51
 msgid "Do you want to remove unfinished task?"
-msgstr ""
+msgstr "您是否想要移除未完成的任务？"
 
 #: ../bcloud/DownloadPage.py:57
 msgid "Do not ask again"
-msgstr ""
+msgstr "不要再次询问"
 
 #: ../bcloud/DownloadPage.py:91 ../bcloud/IconWindow.py:346
 #: ../bcloud/PreferencesDialog.py:110
@@ -266,7 +267,7 @@ msgstr "暂停"
 
 #: ../bcloud/DownloadPage.py:151 ../bcloud/DownloadPage.py:203
 msgid "Shutdown system after all tasks have finished"
-msgstr ""
+msgstr "全部任务完成后关闭系统"
 
 #: ../bcloud/DownloadPage.py:175 ../bcloud/DownloadPage.py:210
 #: ../bcloud/UploadPage.py:139 ../bcloud/UploadPage.py:175
@@ -411,9 +412,8 @@ msgid "Copy Link"
 msgstr "复制链接地址"
 
 #: ../bcloud/IconWindow.py:349
-#, fuzzy
 msgid "Download to..."
-msgstr "下载"
+msgstr "下载到..."
 
 #: ../bcloud/IconWindow.py:352 ../bcloud/SharePage.py:59
 msgid "Share"
@@ -421,7 +421,7 @@ msgstr "分享"
 
 #: ../bcloud/IconWindow.py:355
 msgid "Private Share"
-msgstr ""
+msgstr "私有共享"
 
 #: ../bcloud/IconWindow.py:361 ../bcloud/IconWindow.py:598
 msgid "Move To..."
@@ -444,9 +444,8 @@ msgid "Failed to copy link"
 msgstr "复制链接失败"
 
 #: ../bcloud/IconWindow.py:537
-#, fuzzy
 msgid "Save to..."
-msgstr "保存到.."
+msgstr "保存到..."
 
 #: ../bcloud/IconWindow.py:557 ../bcloud/IconWindow.py:577
 msgid "Failed to share selected files"
@@ -473,8 +472,8 @@ msgid ""
 "Open the compressed version of videos, useful for those whose network "
 "connection is slow."
 msgstr ""
-"播放压缩后视频(大概会压到480P, 画质可能会有损失).如果你的网速不理想, 这会很有"
-"用"
+"播放压缩后视频(大概会压到480P, 画质可能会有损失).如果你的网速不理想, 这会很"
+"有用"
 
 #: ../bcloud/PreferencesDialog.py:49
 msgid "Use notification:"
@@ -490,7 +489,7 @@ msgstr "最小化到系统托盘:"
 
 #: ../bcloud/PreferencesDialog.py:77
 msgid "Startup minimized:"
-msgstr ""
+msgstr "最小化启动："
 
 #: ../bcloud/PreferencesDialog.py:94
 msgid "Display Avatar:"
@@ -554,7 +553,7 @@ msgstr "当下载一个文件时, 本地有相同名称的文件存在"
 
 #: ../bcloud/PreferencesDialog.py:183
 msgid "Ask me when deleting unfinished tasks:"
-msgstr ""
+msgstr "删除未完成任务时询问我："
 
 #: ../bcloud/PreferencesDialog.py:200 ../bcloud/UploadPage.py:48
 msgid "Upload"
@@ -754,19 +753,19 @@ msgstr "不支持手机短信/邮件验证!"
 
 #: ../bcloud/SigninDialog.py:347
 msgid "NET:登录失败,请在弹出的窗口操作,或重新登录"
-msgstr ""
+msgstr "NET:登录失败,请在弹出的窗口操作,或重新登录"
 
 #: ../bcloud/SigninDialog.py:352
 msgid "NET:近期登录次数过多, 请先通过 passport.baidu.com 解除锁定"
-msgstr ""
+msgstr "NET:近期登录次数过多, 请先通过 passport.baidu.com 解除锁定"
 
 #: ../bcloud/SigninDialog.py:357
 msgid "NET:登录过于频繁,请24小时后再试"
-msgstr ""
+msgstr "NET:登录过于频繁,请24小时后再试"
 
 #: ../bcloud/SigninDialog.py:362
 msgid "NET:账号异常，请在当前网络环境下在百度网页端正常登录一次"
-msgstr ""
+msgstr "NET:账号异常，请在当前网络环境下在百度网页端正常登录一次"
 
 #: ../bcloud/SigninDialog.py:366
 msgid "Unknown error, please try again"
