@@ -163,7 +163,7 @@ def refresh_signin_vcode(cookie, tokens, vcodetype):
     url = ''.join([
         const.PASSPORT_BASE,
         'v2/?reggetcodestr',
-        '&token=', tokens['token'],
+        '&token=', tokens,
         '&tpl=pp&apiver=v3',
         '&tt=', util.timestamp(),
         '&fr=ligin',
