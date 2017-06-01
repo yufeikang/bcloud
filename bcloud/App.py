@@ -1,4 +1,3 @@
-
 # Copyright (C) 2014-2015 LiuLang <gsushzhsosgsu@gmail.com>
 # Use of this source code is governed by GPLv3 license that can be found
 # in http://www.gnu.org/licenses/gpl-3.0.html
@@ -9,17 +8,21 @@ import time
 import traceback
 
 import gi
+
 gi.require_version('Gdk', '3.0')
 from gi.repository import Gdk
 from gi.repository import Gio
 from gi.repository import GLib
 from gi.repository import GObject
+
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
+
 gi.require_version('Notify', '0.7')
 from gi.repository import Notify
 
 from bcloud import Config
+
 Config.check_first()
 _ = Config._
 from bcloud import const
@@ -41,16 +44,18 @@ from bcloud.UploadPage import UploadPage
 from bcloud.FileWatcher import WatchFileChange
 
 try:
-# Ubuntu Unity uses appindicator instead of status icon
+    # Ubuntu Unity uses appindicator instead of status icon
+    import gi
+
+    gi.require_version('AppIndicator3', '0.1')
     from gi.repository import AppIndicator3 as AppIndicator
 except ImportError:
     logger.debug(traceback.format_exc())
 
-
 if Config.GTK_LE_36:
     GObject.threads_init()
 (ICON_COL, NAME_COL, TOOLTIP_COL, COLOR_COL) = list(range(4))
-BLINK_DELTA = 250    # 字体闪烁间隔, 250 miliseconds 
+BLINK_DELTA = 250  # 字体闪烁间隔, 250 miliseconds
 BLINK_SUSTAINED = 3  # 字体闪烁持续时间, 5 seconds
 
 # 用于处理拖放上传
@@ -61,7 +66,6 @@ DROP_TARGET_LIST = [Gtk.TargetEntry.new(*t) for t in DROP_TARGETS]
 
 
 class App:
-
     profile = None
     cookie = None
     tokens = None
@@ -174,7 +178,7 @@ class App:
         key, mod = Gtk.accelerator_parse('F5')
         self.window.connect('activate-default', self.reload_current_page)
         self.window.add_accelerator('activate-default',
-                self.accel_group, key, mod, Gtk.AccelFlags.VISIBLE)
+                                    self.accel_group, key, mod, Gtk.AccelFlags.VISIBLE)
 
     def on_app_activate(self, app):
         if not self.profile:
@@ -312,6 +316,7 @@ class App:
 
     def update_avatar(self):
         '''更新用户头像'''
+
         def do_update_avatar(info, error=None):
             if error or not info:
                 logger.error('Failed to get user avatar: %s, %s' %
@@ -323,6 +328,7 @@ class App:
                     self.profile['username'],
                     uname,
                 ])
+
         if not self.profile['display-avatar']:
             return
         self.img_avatar.props.tooltip_text = ''
@@ -375,7 +381,7 @@ class App:
         enable_sync = self.profile['enable-sync']
         if enable_sync:
             sync_dir = self.profile['sync-dir']
-            #self.filewatcher = WatchFileChange(sync_dir, self.upload_page.add_bg_task)
+            # self.filewatcher = WatchFileChange(sync_dir, self.upload_page.add_bg_task)
             self.filewatcher = WatchFileChange(sync_dir, self)
             self.filewatcher.start()
 
@@ -411,8 +417,8 @@ class App:
     def init_status_icon(self):
         def on_status_icon_popup_menu(status_icon, event_button, event_time):
             menu.popup(None, None,
-                    lambda a,b: Gtk.StatusIcon.position_menu(menu, status_icon),
-                    None, event_button, event_time)
+                       lambda a, b: Gtk.StatusIcon.position_menu(menu, status_icon),
+                       None, event_button, event_time)
 
         def on_status_icon_activate(status_icon):
             if self.window.props.visible:
@@ -433,15 +439,15 @@ class App:
         menu.append(sep_item)
 
         pause_upload_item = Gtk.MenuItem.new_with_label(
-                _('Pause Upload Tasks'))
+            _('Pause Upload Tasks'))
         pause_upload_item.connect('activate',
-                lambda item: self.upload_page.pause_tasks())
+                                  lambda item: self.upload_page.pause_tasks())
         menu.append(pause_upload_item)
 
         pause_download_item = Gtk.MenuItem.new_with_label(
-                _('Pause Download Tasks'))
+            _('Pause Download Tasks'))
         pause_download_item.connect('activate',
-                lambda item: self.download_page.pause_tasks())
+                                    lambda item: self.download_page.pause_tasks())
         menu.append(pause_download_item)
 
         sep_item = Gtk.SeparatorMenuItem()
@@ -456,8 +462,8 @@ class App:
 
         if 'AppIndicator' in globals():
             self.status_icon = AppIndicator.Indicator.new(Config.NAME,
-                    Config.NAME,
-                    AppIndicator.IndicatorCategory.APPLICATION_STATUS)
+                                                          Config.NAME,
+                                                          AppIndicator.IndicatorCategory.APPLICATION_STATUS)
             self.status_icon.set_menu(menu)
             self.status_icon.set_status(AppIndicator.IndicatorStatus.ACTIVE)
         else:
@@ -476,7 +482,7 @@ class App:
                 row[COLOR_COL] = self.default_color
                 return False
             return True
-        
+
         start_time = time.time()
         for index, p in enumerate(self.notebook):
             if p == page:
