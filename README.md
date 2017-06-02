@@ -36,6 +36,7 @@ bcloud 是[百度网盘](http://pan.baidu.com)的Linux桌面客户端.
 需要Python3支持
 安装执行：
 ```
+pip3 install lxml cssselect pyinotify keyring pycrypto
 python3 setup.py install
 ```
 
