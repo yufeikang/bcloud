@@ -1,0 +1,2 @@
+keyring
+pycrypto==2.6.1
