@@ -38,7 +38,13 @@ bcloud 是[百度网盘](http://pan.baidu.com)的Linux桌面客户端.
 ```
 python3 setup.py install
 ```
+卸载执行：
+```bash
+python setup.py install --record files.txt #记录安装后文件的路径
 
+cat files.txt | xargs rm -rf  #删除这些文件
+```
+**最近有不少用户反馈安装后无法启动，原因大多数是因为缺少某些依赖的模块。我已经添加了部分依赖到requiements.txt文件中。如还有报错请大家issues的时候附上log**
 
 Q&A
 ===

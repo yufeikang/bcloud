@@ -1,2 +1,3 @@
 keyring
 pycrypto==2.6.1
+lxml
