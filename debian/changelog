@@ -1,0 +1,24 @@
+bcloud (3.9.1+git20170619-1) unstable; urgency=medium
+
+  * New upstream snapshot.
+
+ -- Boyuan Yang <073plan@gmail.com>  Wed, 28 Jun 2017 17:03:14 +0800
+
+bcloud (3.9.1+git20170531-1) unstable; urgency=medium
+
+  * New upstream snapshot.
+
+ -- Boyuan Yang <073plan@gmail.com>  Thu, 01 Jun 2017 19:38:14 +0800
+
+bcloud (3.9.1+git20170526-1) unstable; urgency=medium
+
+  * New upstream snapshot.
+    + Finished zh_CN translations.
+
+ -- Boyuan Yang <073plan@gmail.com>  Fri, 26 May 2017 21:31:47 +0800
+
+bcloud (3.9.1+git20170406-1) unstable; urgency=medium
+
+  * Initial repack for Debian unstable.
+
+ -- Boyuan Yang <073plan@gmail.com>  Mon, 24 Apr 2017 17:19:54 +0800

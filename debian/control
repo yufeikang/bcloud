@@ -1,0 +1,41 @@
+Source: bcloud
+Maintainer: Yufei Kang <kyf0722@gmail.com>
+Uploaders:
+ Boyuan Yang <073plan@gmail.com>,
+Section: python
+Priority: optional
+Build-Depends:
+ debhelper (>= 9),
+ dh-python,
+ python3-all,
+ python3-setuptools,
+Standards-Version: 3.9.8
+X-Python3-Version: >= 3.3
+Homepage: https://github.com/Yufeikang/bcloud
+Vcs-Git: https://github.com/Yufeikang/bcloud.git
+Vcs-Browser: https://github.com/Yufeikang/bcloud.git
+
+Package: bcloud
+Architecture: all
+Depends:
+ gir1.2-appindicator3-0.1,
+ gir1.2-gnomekeyring-1.0,
+ gir1.2-gtk-3.0,
+ gir1.2-notify-0.7,
+ python3-crypto,
+ python3-cssselect,
+ python3-dbus,
+ python3-gi,
+ python3-keyring,
+ python3-lxml,
+ python3-pyinotify,
+ python3-urllib3,
+ ${misc:Depends},
+ ${python3:Depends},
+Recommends:
+ notification-daemon,
+Suggests:
+ gnome-icon-theme-symbolic,
+Description: Baidu Pan client for Linux users
+ Alternative client of Baidu Pan (Baidu Personal Cloud) for Linux desktop
+ users.
