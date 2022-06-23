@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "bcloud"
+version = "0.1.0"
+description = ""
+authors = ["Yufei Kang <yufei.kang@elestyle.jp>"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+
+[tool.poetry.dev-dependencies]
+blank = "^0.1.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
